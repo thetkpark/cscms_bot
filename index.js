@@ -9,6 +9,8 @@ const port = process.env.PORT || 3000
 const app = express()
 const bot = new telegraf(process.env.BOT_TOKEN)
 
+const telegram = new Telegram(process.env.BOT_TOKEN)
+
 bot.start((ctx) => {
     console.log(ctx.update.message.chat.id)
     ctx.reply('Welcome! use /status to get status of the server')
@@ -32,24 +34,21 @@ bot.telegram.setWebhook('https://pacific-citadel-75808.herokuapp.com/webhook')
 // bot.launch()
 
 app.get('/', (req, res) => {
-    res.send({ 
-        sucess: true,
-        updated: true 
-    })
-    telegram.sendMessage(834716830, 'test')
+    res.send({ sucess: true })
 })
 app.use(bot.webhookCallback('/webhook'))
-
+let isUp = false
 setInterval(async () => {
-    let isUp = false
     const data = await axios('http://35.240.129.191:61208/api/3/uptime')
     if(data.status===200 && isUp == false){
         isUp = true
-        telegram.sendMessage(834716830, 'Server is UP!')
+        console.log(isUp);
+        return telegram.sendMessage(834716830, 'Server is UP!')
     }
-    if(data.status!=200 && isUp == true) {
+    else if(data.status!=200 && isUp == true) {
         isUp = false
-        telegram.sendMessage(834716830, `It's down!`)
+        console.log(isUp);
+        return telegram.sendMessage(834716830, `It's down!`)
     }
 }, 10000);
 
