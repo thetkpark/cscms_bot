@@ -32,7 +32,11 @@ bot.telegram.setWebhook('https://pacific-citadel-75808.herokuapp.com/webhook')
 // bot.launch()
 
 app.get('/', (req, res) => {
-    res.send({ sucess: true })
+    res.send({ 
+        sucess: true,
+        updated: true 
+    })
+    telegram.sendMessage(834716830, 'test')
 })
 app.use(bot.webhookCallback('/webhook'))
 
