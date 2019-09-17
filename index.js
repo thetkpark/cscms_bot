@@ -1,6 +1,8 @@
 const express = require('express')
 const axios = require('axios');
 const telegraf = require('telegraf')
+const Telegram = require('telegraf/telegram')
+
 require('dotenv').config()
 const port = process.env.PORT || 3000
 
@@ -39,11 +41,11 @@ setInterval(async () => {
     const data = await axios('http://35.240.129.191:61208/api/3/uptime')
     if(data.status===200 && isUp == false){
         isUp = true
-
+        telegram.sendMessage(834716830, 'Server is UP!')
     }
     if(data.status!=200 && isUp == true) {
         isUp = false
-
+        telegram.sendMessage(834716830, `It's down!`)
     }
 }, 10000);
 
