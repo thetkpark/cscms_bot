@@ -1,10 +1,10 @@
-//const express = require('express')
+const express = require('express')
 const axios = require('axios');
 const telegraf = require('telegraf')
 require('dotenv').config()
-//const port = process.env.port || 8000
+const port = process.env.PORT || 3000
 
-//const app = express();
+const app = express()
 const bot = new telegraf(process.env.BOT_TOKEN)
 
 bot.start((ctx) => ctx.reply('Welcome! use /status to get status of the server'))
@@ -16,9 +16,20 @@ bot.command('status', async (ctx) => {
     ctx.reply(reply)
 })
 
+bot.hears('fuck you', (ctx) => {
+    return ctx.reply(`Fuck you too. 🖕`)
+})
+
 bot.on('text', ({ replyWithHTML }) => replyWithHTML('<b>Hello</b>'))
 
-bot.launch()
+bot.telegram.setWebhook('https://pacific-citadel-75808.herokuapp.com/webhook')
 
-//app.listen(port, () => console.log(`Running on ${port}`))
+//bot.launch()
+
+app.get('/', (req, res) => {
+    res.send({ sucess: true })
+})
+app.use(bot.webhookCallback('/webhook'))
+
+app.listen(port, () => console.log(`Running on ${port}`))
 
