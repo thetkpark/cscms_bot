@@ -22,14 +22,27 @@ bot.hears('fuck you', (ctx) => {
 
 bot.on('text', ({ replyWithHTML }) => replyWithHTML('<b>Hello</b>'))
 
-bot.telegram.setWebhook('https://pacific-citadel-75808.herokuapp.com/webhook')
+//bot.telegram.setWebhook('https://pacific-citadel-75808.herokuapp.com/webhook')
 
 //bot.launch()
 
 app.get('/', (req, res) => {
     res.send({ sucess: true })
 })
-app.use(bot.webhookCallback('/webhook'))
+//app.use(bot.webhookCallback('/webhook'))
+
+// setInterval(async () => {
+//     let isUp = false
+//     const data = await axios('http://35.240.129.191:61208/api/3/uptime')
+//     if(data.status===200 && isUp == false){
+//         isUp = true
+
+//     }
+//     if(data.status!=200 && isUp == true) {
+//         isUp = false
+
+//     }
+// }, 10000);
 
 app.listen(port, () => console.log(`Running on ${port}`))
 
