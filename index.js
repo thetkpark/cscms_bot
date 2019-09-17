@@ -7,10 +7,13 @@ const port = process.env.PORT || 3000
 const app = express()
 const bot = new telegraf(process.env.BOT_TOKEN)
 
-bot.start((ctx) => ctx.reply('Welcome! use /status to get status of the server'))
+bot.start((ctx) => {
+    console.log(ctx.update.message.chat.id)
+    ctx.reply('Welcome! use /status to get status of the server')
+})
+
 
 bot.command('status', async (ctx) => {
-    //const {data} = await axios.get('http://icanhazip.com')
     const {data} = await axios.get('http://35.240.129.191:61208/api/3/all');
     const reply = `Time: ${data.now}\nCPU Usage: ${data.cpu.total}%\nMemory Usage: ${data.mem.percent}%\nUptime: ${data.uptime}`
     ctx.reply(reply)
@@ -22,27 +25,27 @@ bot.hears('fuck you', (ctx) => {
 
 bot.on('text', ({ replyWithHTML }) => replyWithHTML('<b>Hello</b>'))
 
-//bot.telegram.setWebhook('https://pacific-citadel-75808.herokuapp.com/webhook')
+bot.telegram.setWebhook('https://pacific-citadel-75808.herokuapp.com/webhook')
 
-//bot.launch()
+// bot.launch()
 
 app.get('/', (req, res) => {
     res.send({ sucess: true })
 })
-//app.use(bot.webhookCallback('/webhook'))
+app.use(bot.webhookCallback('/webhook'))
 
-// setInterval(async () => {
-//     let isUp = false
-//     const data = await axios('http://35.240.129.191:61208/api/3/uptime')
-//     if(data.status===200 && isUp == false){
-//         isUp = true
+setInterval(async () => {
+    let isUp = false
+    const data = await axios('http://35.240.129.191:61208/api/3/uptime')
+    if(data.status===200 && isUp == false){
+        isUp = true
 
-//     }
-//     if(data.status!=200 && isUp == true) {
-//         isUp = false
+    }
+    if(data.status!=200 && isUp == true) {
+        isUp = false
 
-//     }
-// }, 10000);
+    }
+}, 10000);
 
 app.listen(port, () => console.log(`Running on ${port}`))
 
