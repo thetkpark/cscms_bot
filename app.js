@@ -4,6 +4,7 @@ const telegraf = require('telegraf')
 const Telegram = require('telegraf/telegram')
 
 require('dotenv').config()
+require('./src/checkDown')
 const port = process.env.PORT || 3000
 
 const app = express()
@@ -37,20 +38,7 @@ app.get('/', (req, res) => {
     res.send({ sucess: true })
 })
 app.use(bot.webhookCallback('/webhook'))
-let isUp = false
-setInterval(async () => {
-    const data = await axios('http://35.240.129.191:61208/api/3/uptime')
-    if(data.status===200 && isUp == false){
-        isUp = true
-        console.log(isUp);
-        return telegram.sendMessage(834716830, 'Server is UP!')
-    }
-    else if(data.status!=200 && isUp == true) {
-        isUp = false
-        console.log(isUp);
-        return telegram.sendMessage(834716830, `It's down!`)
-    }
-}, 10000);
+
 
 app.listen(port, () => console.log(`Running on ${port}`))
 
