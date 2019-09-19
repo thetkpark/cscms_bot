@@ -16,8 +16,7 @@ const ddos = new Ddos({
     burst:10, 
     limit:30,
     checkinterval: 3,
-    errormessage: "Slow down bro. Too many request",
-    testmode: true
+    errormessage: "Slow down bro. Too many request"
 })
 
 app.use(ddos.express);
