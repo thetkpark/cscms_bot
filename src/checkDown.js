@@ -10,9 +10,9 @@ async function getInitState () {
     if (data.status === 200) isUp = true;
     else if (data.status != 200) isUp = false;
     console.log(`Init complete, Server is up: ${isUp}`);
-    return telegram.sendMessage(834716830, `Init complete, Server up: ${isUp}`);
+    return telegram.sendMessage(-320729079, `Init complete, Server up: ${isUp}`);
 } 
-
+//834716830
 getInitState();
 
 setInterval(async () => {
@@ -20,12 +20,12 @@ setInterval(async () => {
     if (data.status === 200 && isUp == false) {
         isUp = true;
         console.log(isUp);
-        return telegram.sendMessage(834716830, 'Server is UP!');
+        return telegram.sendMessage(-320729079, 'Server is UP!');
     }
     else if (data.status != 200 && isUp == true) {
         isUp = false;
         console.log(isUp);
-        return telegram.sendMessage(834716830, `It's down!`);
+        return telegram.sendMessage(-320729079, `It's down!`);
     }
 }, 10000);
 

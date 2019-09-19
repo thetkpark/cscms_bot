@@ -2,6 +2,7 @@ const express = require('express')
 const axios = require('axios');
 const telegraf = require('telegraf')
 const Telegram = require('telegraf/telegram')
+const Ddos = require('ddos')
 
 require('dotenv').config()
 require('./src/checkDown')
@@ -9,8 +10,17 @@ const port = process.env.PORT || 3000
 
 const app = express()
 const bot = new telegraf(process.env.BOT_TOKEN)
-
 const telegram = new Telegram(process.env.BOT_TOKEN)
+
+const ddos = new Ddos({
+    burst:10, 
+    limit:30,
+    checkinterval: 3,
+    errormessage: "Slow down bro. Too many request",
+    testmode: true
+})
+
+app.use(ddos.express);
 
 bot.start((ctx) => {
     console.log(ctx.update.message.chat.id)

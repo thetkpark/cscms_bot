@@ -20,6 +20,7 @@
   "homepage": "https://github.com/thetkpark/cscms_bot#readme",
   "dependencies": {
     "axios": "^0.19.0",
+    "ddos": "^0.2.1",
     "dotenv": "^8.1.0",
     "express": "^4.17.1",
     "nodemon": "^1.19.2",
