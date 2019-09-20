@@ -61,8 +61,8 @@ bot.on('text', ({ replyWithHTML }) => replyWithHTML('<b>Hello</b>'))
 
 ////////Server Zone/////////
 
-//https://pacific-citadel-75808.herokuapp.com/webhook
-bot.telegram.setWebhook('https://pacific-citadel-75808.herokuapp.com/webhook')
+// https://pacific-citadel-75808.herokuapp.com/webhook
+bot.telegram.setWebhook(`${process.env.URL}/webhook`)
 
 // bot.launch()
 
