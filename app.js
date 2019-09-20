@@ -3,6 +3,8 @@ const axios = require('axios');
 const telegraf = require('telegraf')
 const Telegram = require('telegraf/telegram')
 const Ddos = require('ddos')
+const { convertTime, getTime } = require('./src/Time')
+
 
 require('dotenv').config()
 require('./src/checkDown')
@@ -27,25 +29,37 @@ bot.start((ctx) => {
 })
 
 
+////////Command Zone/////////
+
 bot.command('status', async (ctx) => {
     let reply
     try{
         const {data} = await axios.get('http://35.240.129.191:61208/api/3/all')
-        reply = `Time: ${data.now}\nCPU Usage: ${data.cpu.total}%\nMemory Usage: ${data.mem.percent}%\nUptime: ${data.uptime}`
+        const time = convertTime(data.now)
+        reply = `Time: ${time}\nServer status: Up\nCPU Usage: ${data.cpu.total}%\nMemory Usage: ${data.mem.percent}%\nUptime: ${data.uptime}`
     }
     catch{
-        reply = `Failed to get the status`
+        const time = getTime()
+        reply = `Time: ${time}\nServer status: Down\nFailed to get the status`
     }
     
     ctx.reply(reply)
     
 })
 
+
+
+
 bot.hears('fuck you', (ctx) => {
     return ctx.reply(`Fuck you too. 🖕`)
 })
 
 bot.on('text', ({ replyWithHTML }) => replyWithHTML('<b>Hello</b>'))
+
+
+
+
+////////Server Zone/////////
 
 //https://pacific-citadel-75808.herokuapp.com/webhook
 bot.telegram.setWebhook('https://pacific-citadel-75808.herokuapp.com/webhook')
