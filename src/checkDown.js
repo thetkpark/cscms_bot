@@ -44,7 +44,7 @@ setInterval(async () => {
         }
     }
     if(message != undefined){
-        telegram.sendMessage(834716830,`Time: ${getTime()}` + message)
+        telegram.sendMessage(834716830,`Time: ${getTime()}\n` + message)
     }
 
     

@@ -36,6 +36,7 @@ bot.command('status', async (ctx) => {
     try{
         const {data} = await axios.get('http://35.240.129.191:61208/api/3/all')
         const time = convertTime(data.now)
+        console.log(time);
         reply = `Time: ${time}\nServer status: Up\nCPU Usage: ${data.cpu.total}%\nMemory Usage: ${data.mem.percent}%\nUptime: ${data.uptime}`
     }
     catch{
