@@ -28,9 +28,17 @@ bot.start((ctx) => {
 
 
 bot.command('status', async (ctx) => {
-    const {data} = await axios.get('http://35.240.129.191:61208/api/3/all');
-    const reply = `Time: ${data.now}\nCPU Usage: ${data.cpu.total}%\nMemory Usage: ${data.mem.percent}%\nUptime: ${data.uptime}`
+    let reply
+    try{
+        const {data} = await axios.get('http://35.240.129.191:61208/api/3/all')
+        reply = `Time: ${data.now}\nCPU Usage: ${data.cpu.total}%\nMemory Usage: ${data.mem.percent}%\nUptime: ${data.uptime}`
+    }
+    catch{
+        reply = `Failed to get the status`
+    }
+    
     ctx.reply(reply)
+    
 })
 
 bot.hears('fuck you', (ctx) => {
@@ -39,6 +47,7 @@ bot.hears('fuck you', (ctx) => {
 
 bot.on('text', ({ replyWithHTML }) => replyWithHTML('<b>Hello</b>'))
 
+//https://pacific-citadel-75808.herokuapp.com/webhook
 bot.telegram.setWebhook('https://pacific-citadel-75808.herokuapp.com/webhook')
 
 // bot.launch()
