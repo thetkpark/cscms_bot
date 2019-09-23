@@ -34,7 +34,6 @@ async function getPollution() {
     }
 }
 
-getPollution()
 module.exports = {
     getCurrentWeather,
     getPollution
