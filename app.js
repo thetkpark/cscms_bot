@@ -1,5 +1,5 @@
 const express = require('express')
-const axios = require('axios');
+const axios = require('axios')
 const telegraf = require('telegraf')
 const Telegram = require('telegraf/telegram')
 const Ddos = require('ddos')
@@ -28,19 +28,18 @@ bot.start((ctx) => {
     ctx.reply('Welcome! use /status to get status of the server')
 })
 
-
 ////////Command Zone/////////
 
 bot.command('status', async (ctx) => {
     let reply
     try{
-        const {data} = await axios.get('http://35.240.129.191:61208/api/3/all')
+        const {data} = await axios.get(`${process.env.ENDPOINT}:61208/api/3/all`)
         const time = convertTime(data.now)
-        reply = `Time: ${time}\nServer status: Up\nCPU Usage: ${data.cpu.total}%\nMemory Usage: ${data.mem.percent}%\nUptime: ${data.uptime}`
+        reply = `Time: ${time}\nServer status: ✅\nCPU Usage: ${data.cpu.total}%\nMemory Usage: ${data.mem.percent}%\nUptime: ${data.uptime}`
     }
     catch{
         const time = getTime()
-        reply = `Time: ${time}\nServer status: Down\nFailed to get the status`
+        reply = `Time: ${time}\nServer status: 🚨\nFailed to get the status`
     }
     
     ctx.reply(reply)
@@ -61,7 +60,7 @@ bot.on('text', ({ replyWithHTML }) => replyWithHTML('<b>Hello</b>'))
 
 ////////Server Zone/////////
 
-// https://pacific-citadel-75808.herokuapp.com/webhook
+
 bot.telegram.setWebhook(`${process.env.URL}/webhook`)
 
 // bot.launch()

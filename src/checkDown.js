@@ -2,15 +2,16 @@ const axios = require('axios');
 const Telegram = require('telegraf/telegram')
 const { convertTime, getTime } = require('./Time')
 
+require('dotenv').config()
 const telegram = new Telegram(process.env.BOT_TOKEN);
 
 let isUp;
 
 async function getInitState () {
     try{
-        const data = await axios('http://35.240.129.191:61208/api/3/uptime');
-        if (data.status === 200) isUp = true;
-        else if (data.status != 200) isUp = false;
+        const data = await axios(`${process.env.ENDPOINT}:61208/api/3/uptime`);
+        if (data.status === 200) isUp = `✅`;
+        else if (data.status != 200) isUp = `⛔️`;
     }
     catch{
         isUp = false
@@ -44,7 +45,7 @@ setInterval(async () => {
         }
     }
     if(message != undefined){
-        telegram.sendMessage(834716830,`Time: ${getTime()}\n` + message)
+        telegram.sendMessage(834716830,`At ${getTime()}\n` + message)
     }
 
     
