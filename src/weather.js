@@ -27,7 +27,7 @@ async function getPollution() {
         else if(pollution.aqius>=101) status = 'Unhealthy for Sensitive Groups 🤧'
         else if(pollution.aqius>=51) status = 'Moderate 😫'
         else if(pollution.aqius>=0) status = 'Good ☺️'
-        return `Time: ${convertTime(pollution.ts)}\n💨 AQI: ${pollution.aqius}\n👀 Status: ${status}`
+        return `Time: ${convertTime(pollution.ts)}\n💨 AQI: ${pollution.aqius} -> ${status}`
     }
     catch(err){
         return `💥 Failed to get pollution data. ${err.response.data.data.message}`
