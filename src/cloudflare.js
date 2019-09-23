@@ -24,8 +24,6 @@ async function getAnalysis(hour) {
     
 }
 
-getAnalysis(24)
-
 module.exports = {
     getAnalysis
 }

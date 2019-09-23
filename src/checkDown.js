@@ -31,7 +31,7 @@ setInterval(async () => {
         const data = await axios(`${process.env.ENDPOINT}:61208/api/3/uptime`)
         if (data.status === 200 && isUp == false) {
             isUp = true
-            message = `Server is UP! ✈️🚴🏼‍♀🤴👑`
+            message = `Server is back to ONLINE! ✈️🚴🏼‍♀🤴👑`
         }
         else if(data.status != 200 && isUp == false) {
             isUp = false
@@ -48,7 +48,5 @@ setInterval(async () => {
         telegram.sendMessage(834716830,`At ${getTime()}\n` + message)
     }
 
-    
-    
 }, 10000);
 
