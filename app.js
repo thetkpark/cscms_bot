@@ -4,6 +4,7 @@ const telegraf = require('telegraf')
 const Telegram = require('telegraf/telegram')
 const Ddos = require('ddos')
 const { convertTime, getTime } = require('./src/Time')
+const { getAnalysis } = require('./src/cloudflare')
 
 
 require('dotenv').config()
@@ -44,6 +45,12 @@ bot.command('status', async (ctx) => {
     
     ctx.reply(reply)
     
+})
+
+
+bot.command('analysis', async (ctx) => {
+    const reply = await getAnalysis(24)
+    ctx.reply(reply)
 })
 
 

@@ -28,20 +28,20 @@ getInitState()
 setInterval(async () => {
     let message
     try{
-        const data = await axios('http://35.240.129.191:61208/api/3/uptime')
+        const data = await axios(`${process.env.ENDPOINT}:61208/api/3/uptime`)
         if (data.status === 200 && isUp == false) {
             isUp = true
-            message = `Server is UP!`
+            message = `Server is UP! ✈️🚴🏼‍♀🤴👑`
         }
         else if(data.status != 200 && isUp == false) {
             isUp = false
-            message = `There is a problem. Not getting 200`
+            message = `There is a problem. Not getting 200 😑`
         }
     }
     catch{
         if(isUp == true){
             isUp = false;
-            message = `Server is DOWN!`
+            message = `Server is DOWN! 🚨💀`
         }
     }
     if(message != undefined){

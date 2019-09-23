@@ -26,7 +26,17 @@ function getTime(){
     return convertTime(dateTime)
 }
 
+function getISOTime(hour){
+    const date = new Date(Date.now())
+    const pastDate = new Date(Date.now() - hour*60*60*1000)
+    return {
+        now: date.toISOString(),
+        since: pastDate.toISOString()
+    }
+}
+
 module.exports = {
     convertTime,
-    getTime
+    getTime,
+    getISOTime
 }
