@@ -1,19 +1,22 @@
 const axios = require('axios')
-const { convertTime } = require('./Time')
+const { convertTime, getTime } = require('./Time')
 require('dotenv').config()
 
 async function getCurrentWeather(){
-    const url = `http://dataservice.accuweather.com/currentconditions/v1/3558717?apikey=${process.env.WEATHER_API_KEY}`
+    const lat = 13.63
+    const long = 100.51
+    const url = `https://api.darksky.net/forecast/${process.env.WEATHER_API_KEY}/${lat},${long}?units=si`
     try{
         const {data} = await axios.get(url)
-        const temp = data[0].Temperature.Metric
-        return `Time: ${convertTime(data[0].LocalObservationDateTime)}\n🌡 Temperatur: ${temp.Value}℃\n💦 Precipitation: ${data[0].HasPrecipitation}\n⛅️ Description: ${data[0].WeatherText}`
+        const currently = data.currently;
+        return `Time: ${getTime()}\n🌡 Temperature: ${currently.temperature}℃\n🥵 Feel likes: ${currently.apparentTemperature}\n💦 Humidity: ${currently.humidity}\n🌧 Precipitation: ${currently.precipProbability*100}%\n🌞 UV Index: ${currently.uvIndex}\n⛅️ Summary: ${currently.summary}`
     }
     catch(err){
         return `🙀 Failed to get weather data. ${err.response.data.Message}`
     }
     
 }
+getCurrentWeather().then(res => console.log(res))
 
 async function getPollution() {
     const url = `http://api.airvisual.com/v2/nearest_city?lat=13.650234&lon=100.496855&key=${process.env.AIR_VISUAL_API_KEY}`

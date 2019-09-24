@@ -3,10 +3,10 @@ const axios = require('axios')
 const telegraf = require('telegraf')
 const Telegram = require('telegraf/telegram')
 const Ddos = require('ddos')
+
 const { convertTime, getTime } = require('./src/Time')
 const { getAnalysis } = require('./src/cloudflare')
 const { getCurrentWeather, getPollution } = require('./src/weather')
-
 
 require('dotenv').config()
 require('./src/checkDown')
@@ -62,6 +62,10 @@ bot.command('weather', async (ctx) => {
 bot.command('pollution', async (ctx) => {
     const reply = await getPollution()
     ctx.reply(reply)
+})
+
+bot.on('location', (ctx) => {
+    console.log(ctx.update.message.location)
 })
 
 

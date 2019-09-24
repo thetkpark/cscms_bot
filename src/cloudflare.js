@@ -6,9 +6,6 @@ const config = {
     headers: {'Authorization': "Bearer " + process.env.CFTOKEN}
 }
 
-
-
-
 async function getAnalysis(hour) {
     const time = getISOTime(hour)
     const url = `https://api.cloudflare.com/client/v4/zones/${process.env.CFZONEID}/analytics/dashboard?since=${time.since}&until=${time.now}&continuous=true`
