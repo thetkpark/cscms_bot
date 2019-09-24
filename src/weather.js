@@ -9,14 +9,14 @@ async function getCurrentWeather(){
     try{
         const {data} = await axios.get(url)
         const currently = data.currently;
-        return `Time: ${getTime()}\n🌡 Temperature: ${currently.temperature}℃\n🥵 Feel likes: ${currently.apparentTemperature}\n💦 Humidity: ${currently.humidity}\n🌧 Precipitation: ${currently.precipProbability*100}%\n🌞 UV Index: ${currently.uvIndex}\n⛅️ Summary: ${currently.summary}`
+        return `Time: ${getTime()}\n🌡 Temperature: ${currently.temperature}℃\n🥵 Feel likes: ${currently.apparentTemperature}\n💦 Humidity: ${currently.humidity*100}%\n🌧 Precipitation: ${currently.precipProbability*100}%\n🌞 UV Index: ${currently.uvIndex}\n⛅️ Summary: ${currently.summary}`
     }
     catch(err){
         return `🙀 Failed to get weather data. ${err.response.data.Message}`
     }
     
 }
-getCurrentWeather().then(res => console.log(res))
+
 
 async function getPollution() {
     const url = `http://api.airvisual.com/v2/nearest_city?lat=13.650234&lon=100.496855&key=${process.env.AIR_VISUAL_API_KEY}`
