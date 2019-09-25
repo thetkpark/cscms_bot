@@ -9,7 +9,7 @@ async function getCurrentWeather(){
     try{
         const {data} = await axios.get(url)
         const currently = data.currently;
-        return `Time: ${getTime()}\n🌡 Temperature: ${currently.temperature}℃\n🥵 Feel likes: ${currently.apparentTemperature}\n💦 Humidity: ${currently.humidity*100}%\n🌧 Precipitation: ${currently.precipProbability*100}%\n🌞 UV Index: ${currently.uvIndex}\n⛅️ Summary: ${currently.summary}`
+        return `Time: ${getTime()}\n🌡 Temperature: ${currently.temperature}℃\n🤒 Feel likes: ${currently.apparentTemperature}℃\n💦 Humidity: ${currently.humidity*100}%\n🌧 Precipitation: ${currently.precipProbability*100}%\n🌞 UV Index: ${currently.uvIndex}\n⛅️ Summary: ${currently.summary}`
     }
     catch(err){
         return `🙀 Failed to get weather data. ${err.response.data.Message}`
@@ -28,7 +28,7 @@ async function getPollution() {
         else if(pollution.aqius>=201) status = 'Very Unhealthy 🤮'
         else if(pollution.aqius>=151) status = 'Unhealthy 😷'
         else if(pollution.aqius>=101) status = 'Unhealthy for Sensitive Groups 🤧'
-        else if(pollution.aqius>=51) status = 'Moderate 😫'
+        else if(pollution.aqius>=51) status = 'Moderate 😑'
         else if(pollution.aqius>=0) status = 'Good ☺️'
         return `Time: ${convertTime(pollution.ts)}\n💨 AQI: ${pollution.aqius} -> ${status}`
     }

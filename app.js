@@ -7,6 +7,7 @@ const Ddos = require('ddos')
 const { convertTime, getTime } = require('./src/Time')
 const { getAnalysis } = require('./src/cloudflare')
 const { getCurrentWeather, getPollution } = require('./src/weather')
+const { getDevJoke, getJoke, getKnockJoke } = require('./src/joke')
 
 require('dotenv').config()
 require('./src/checkDown')
@@ -62,6 +63,39 @@ bot.command('weather', async (ctx) => {
 bot.command('pollution', async (ctx) => {
     const reply = await getPollution()
     ctx.reply(reply)
+})
+
+bot.command('devjoke', async (ctx) => {
+    const reply = await getDevJoke()
+    ctx.reply(`Get ready for it`)
+    await setTimeout(() => {
+        ctx.reply(reply.setup)
+    }, 2000);
+    await setTimeout(() => {
+        ctx.reply(reply.punchline)
+    }, 5000);
+})
+
+bot.command('joke', async (ctx) => {
+    const reply = await getJoke()
+    ctx.reply(`Here it goes~`)
+    await setTimeout(() => {
+        ctx.reply(reply.setup)
+    }, 2000);
+    await setTimeout(() => {
+        ctx.reply(reply.punchline)
+    }, 5000);
+})
+
+bot.command('knockjoke', async (ctx) => {
+    const reply = await getKnockJoke()
+    ctx.reply(`*At the door*`)
+    await setTimeout(() => {
+        ctx.reply(reply.setup)
+    }, 2000);
+    await setTimeout(() => {
+        ctx.reply(reply.punchline)
+    }, 5000);
 })
 
 bot.on('location', (ctx) => {
