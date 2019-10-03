@@ -2,6 +2,10 @@ const axios = require('axios')
 const { convertTime, getTime } = require('./Time')
 require('dotenv').config()
 
+function roundToTwo(num) {    
+    return +(Math.round(num + "e+2")  + "e-2");
+}
+
 async function getCurrentWeather(){
     const lat = 13.63
     const long = 100.51
@@ -9,7 +13,7 @@ async function getCurrentWeather(){
     try{
         const {data} = await axios.get(url)
         const currently = data.currently;
-        return `Time: ${getTime()}\n🌡 Temperature: ${currently.temperature}℃\n🤒 Feel likes: ${currently.apparentTemperature}℃\n💦 Humidity: ${currently.humidity*100}%\n🌧 Precipitation: ${currently.precipProbability*100}%\n🌞 UV Index: ${currently.uvIndex}\n⛅️ Summary: ${currently.summary}`
+        return `Time: ${getTime()}\n🌡 Temperature: ${currently.temperature}℃\n🤒 Feel likes: ${currently.apparentTemperature}℃\n💦 Humidity: ${roundToTwo(currently.humidity*100)}%\n🌧 Precipitation: ${currently.precipProbability*100}%\n🌞 UV Index: ${currently.uvIndex}\n⛅️ Summary: ${currently.summary}`
     }
     catch(err){
         return `🙀 Failed to get weather data. ${err.response.data.Message}`
