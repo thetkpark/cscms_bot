@@ -6,14 +6,14 @@ const Ddos = require('ddos')
 const multer = require('multer')
 const bodyParser = require('body-parser')
 
-const { convertTime, getTime } = require('./src/Time')
-const { getAnalysis } = require('./src/cloudflare')
-const { getCurrentWeather, getPollution } = require('./src/weather')
-const { getDevJoke, getJoke, getKnockJoke } = require('./src/joke')
-const MailGunWebHookHandler = require('./src/MailGun')
+const { convertTime, getTime } = require('./util/Time')
+const { getAnalysis } = require('./util/cloudflare')
+const { getCurrentWeather, getPollution } = require('./util/weather')
+const { getDevJoke, getJoke, getKnockJoke } = require('./util/joke')
+const MailGunWebHookHandler = require('./util/MailGun')
 
 require('dotenv').config()
-require('./src/checkDown')
+require('./util/checkDown')
 const port = process.env.PORT || 3000
 
 const app = express()
@@ -135,4 +135,3 @@ app.post('/mail', multer().any(), (req,res) => {
 app.post('/telegraf', bot.webhookCallback('/telegraf'))
 
 app.listen(port, () => console.log(`Running on ${port}`))
-
