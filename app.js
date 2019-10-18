@@ -3,11 +3,14 @@ const axios = require('axios')
 const telegraf = require('telegraf')
 const Telegram = require('telegraf/telegram')
 const Ddos = require('ddos')
+const multer = require('multer')
+const bodyParser = require('body-parser')
 
 const { convertTime, getTime } = require('./src/Time')
 const { getAnalysis } = require('./src/cloudflare')
 const { getCurrentWeather, getPollution } = require('./src/weather')
 const { getDevJoke, getJoke, getKnockJoke } = require('./src/joke')
+const MailGunWebHookHandler = require('./src/MailGun')
 
 require('dotenv').config()
 require('./src/checkDown')
@@ -25,6 +28,8 @@ const ddos = new Ddos({
 })
 
 app.use(ddos.express);
+
+//app.use(bodyParser.urlencoded({extended: false})); 
 
 bot.start((ctx) => {
     console.log(ctx.update.message.chat.id)
@@ -109,20 +114,25 @@ bot.on('text', (ctx) => {
 })
 
 
-
-
 ////////Server Zone/////////
 
 
-bot.telegram.setWebhook(`${process.env.URL}/webhook`)
+bot.telegram.setWebhook(`${process.env.URL}/telegraf`)
 
 // bot.launch()
 
 app.get('/', (req, res) => {
     res.send({ sucess: true })
 })
-app.use(bot.webhookCallback('/webhook'))
 
+app.use(bodyParser.urlencoded({extended: false}));
+app.post('/mail', multer().any(), (req,res) => {
+    const message = MailGunWebHookHandler(req,res);
+    telegram.sendMessage(834716830, message)
+    res.end()
+})
+
+app.post('/telegraf', bot.webhookCallback('/telegraf'))
 
 app.listen(port, () => console.log(`Running on ${port}`))
 
