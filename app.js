@@ -29,8 +29,8 @@ app.get('/', (req, res) => {
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.post('/mail', multer().any(), (req,res) => {
-    const message = MailGunWebHookHandler(req,res);
-    telegram.sendMessage(834716830, message)
+    const { message, chatID } = MailGunWebHookHandler(req,res);
+    telegram.sendMessage(chatID, message)
     res.end()
 })
 

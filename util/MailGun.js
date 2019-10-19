@@ -10,8 +10,12 @@ function MailGunWebHookHandler(req,res) {
     if (hash !== req.body.signature) {
         return `Invalid signature webhook signature`
     }
-    const message = `📩 New Email\nSender: ${req.body.sender} \nTo: ${req.body.recipient}\nSubject: ${req.body.subject}`
-    return message
+    let chatID;
+    if(req.body.recipient.includes("thanaphon")) chatID = 877836201
+    else if(req.body.recipient.includes("sethanant")) chatID = 834716830
+    else chatID = -320729079
+    const message = `📩 New Email\nSender: ${req.body.sender} \nRecipient: ${req.body.recipient}\nSubject: ${req.body.subject}`
+    return {message, chatID}
 }
 
 module.exports = MailGunWebHookHandler;
