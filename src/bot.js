@@ -6,6 +6,7 @@ const { convertTime, getTime } = require('../util/Time')
 const { getAnalysis } = require('../util/cloudflare')
 const { getCurrentWeather, getPollution } = require('../util/weather')
 const { getDevJoke, getJoke, getKnockJoke } = require('../util/joke')
+const { findUser, addUser } = require('../util/Airtable')
 
 require('dotenv').config()
 require('../util/checkDown')
@@ -13,16 +14,19 @@ require('../util/checkDown')
 const bot = new telegraf(process.env.BOT_TOKEN)
 const telegram = new Telegram(process.env.BOT_TOKEN)
 
-bot.start((ctx) => {
+bot.start(async (ctx) => {
     console.log(ctx.update.message.chat.id)
+    const users = await findUser('api')
+    console.log(users)
     ctx.reply('Welcome! use /status to get status of the server')
+    
 })
 
 
 ////////Command Zone/////////
 
 
-bot.command('status', async (ctx) => {
+bot.hears('/status', async (ctx) => {
     let reply
     try{
         const {data} = await axios.get(`${process.env.ENDPOINT}:61208/api/3/all`)
@@ -106,4 +110,7 @@ bot.on('text', (ctx) => {
 bot.telegram.setWebhook(`${process.env.URL}/telegraf`)
 
 
-module.exports = bot
+module.exports = {
+    bot,
+    telegram
+}
