@@ -16,8 +16,11 @@ async function findUser(username) {
     return users.records
 }
 
-
 async function addUser(name, chatID, email) {
+    
+}
+
+async function updateUser(chatID, ) {
     
 }
 

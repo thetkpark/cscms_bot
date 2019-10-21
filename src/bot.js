@@ -15,11 +15,12 @@ const bot = new telegraf(process.env.BOT_TOKEN)
 const telegram = new Telegram(process.env.BOT_TOKEN)
 
 bot.start(async (ctx) => {
-    console.log(ctx.update.message.chat.id)
-    const users = await findUser('api')
+    console.log(ctx.update);
+    const username = ctx.update.message.from.username
+    const users = await findUser(username)
     console.log(users)
+    if(users.length == 0) 
     ctx.reply('Welcome! use /status to get status of the server')
-    
 })
 
 
