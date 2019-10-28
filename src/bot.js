@@ -7,6 +7,7 @@ const { getAnalysis } = require('../util/cloudflare')
 const { getCurrentWeather, getPollution } = require('../util/weather')
 const { getDevJoke, getJoke, getKnockJoke } = require('../util/joke')
 const { findUser, addUser } = require('../util/Airtable')
+const getPromptPayQR = require('../util/promptpayQR')
 
 require('dotenv').config()
 require('../util/checkDown')
@@ -15,12 +16,21 @@ const bot = new telegraf(process.env.BOT_TOKEN)
 const telegram = new Telegram(process.env.BOT_TOKEN)
 
 bot.start(async (ctx) => {
-    console.log(ctx.update);
-    const username = ctx.update.message.from.username
-    const users = await findUser(username)
-    console.log(users)
-    if(users.length == 0) 
-    ctx.reply('Welcome! use /status to get status of the server')
+    let message = `Welcome! use /status to get status of the server`
+    const chatID = ctx.update.message.from.id
+    const name = ctx.update.message.from.first_name + ctx.update.message.from.last_name
+    const users = await findUser(chatID) //See if user is already in db
+    if(users.length == 0){
+        try{
+            await addUser(name, chatID)
+            message = 'Welcome! start using now.'
+        }
+        catch(err){
+            console.log(err);
+            message = `There is an error. Try again please`
+        }
+    }
+    ctx.reply(message)
 })
 
 
@@ -96,6 +106,11 @@ bot.on('location', (ctx) => {
     console.log(ctx.update.message.location)
 })
 
+bot.hears(/(qr)(\d*)/,async (ctx) => {
+    const request = /(qr)(\d*)/.exec(ctx.update.message.text)
+    const qr = await getPromptPayQR(request[2])
+    ctx.replyWithPhoto(qr)
+})
 
 bot.on('text', (ctx) => {
     const message = ctx.update.message.text
