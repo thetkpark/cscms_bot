@@ -7,8 +7,7 @@ const Telegram = require('telegraf/telegram')
 
 const MailGunWebHookHandler = require('./util/MailGun')
 
-const telegram = new Telegram(process.env.BOT_TOKEN)
-const bot = require('./src/bot')
+const {bot, telegram} = require('./src/bot')
 const port = process.env.PORT || 3000
 require('dotenv').config()
 

@@ -6,6 +6,8 @@ const { convertTime, getTime } = require('../util/Time')
 const { getAnalysis } = require('../util/cloudflare')
 const { getCurrentWeather, getPollution } = require('../util/weather')
 const { getDevJoke, getJoke, getKnockJoke } = require('../util/joke')
+const { findUser, addUser } = require('../util/Airtable')
+const getPromptPayQR = require('../util/promptpayQR')
 
 require('dotenv').config()
 require('../util/checkDown')
@@ -13,16 +15,29 @@ require('../util/checkDown')
 const bot = new telegraf(process.env.BOT_TOKEN)
 const telegram = new Telegram(process.env.BOT_TOKEN)
 
-bot.start((ctx) => {
-    console.log(ctx.update.message.chat.id)
-    ctx.reply('Welcome! use /status to get status of the server')
+bot.start(async (ctx) => {
+    let message = `Welcome! use /status to get status of the server`
+    const chatID = ctx.update.message.from.id
+    const name = ctx.update.message.from.first_name + ctx.update.message.from.last_name
+    const users = await findUser(chatID) //See if user is already in db
+    if(users.length == 0){
+        try{
+            await addUser(name, chatID)
+            message = 'Welcome! start using now.'
+        }
+        catch(err){
+            console.log(err);
+            message = `There is an error. Try again please`
+        }
+    }
+    ctx.reply(message)
 })
 
 
 ////////Command Zone/////////
 
 
-bot.command('status', async (ctx) => {
+bot.hears('/status', async (ctx) => {
     let reply
     try{
         const {data} = await axios.get(`${process.env.ENDPOINT}:61208/api/3/all`)
@@ -91,6 +106,11 @@ bot.on('location', (ctx) => {
     console.log(ctx.update.message.location)
 })
 
+bot.hears(/(qr)(\d*)/,async (ctx) => {
+    const request = /(qr)(\d*)/.exec(ctx.update.message.text)
+    const qr = await getPromptPayQR(request[2])
+    ctx.replyWithPhoto(qr)
+})
 
 bot.on('text', (ctx) => {
     const message = ctx.update.message.text
@@ -106,4 +126,7 @@ bot.on('text', (ctx) => {
 bot.telegram.setWebhook(`${process.env.URL}/telegraf`)
 
 
-module.exports = bot
+module.exports = {
+    bot,
+    telegram
+}

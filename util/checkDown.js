@@ -21,8 +21,7 @@ async function getInitState () {
     telegram.sendMessage(834716830, `Init status complete, Server up: ${isUp}`);
     
 } 
-//834716830
-//-320729079
+
 getInitState()
 
 setInterval(async () => {
@@ -49,4 +48,3 @@ setInterval(async () => {
     }
 
 }, 10000);
-
