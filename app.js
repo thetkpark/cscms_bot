@@ -33,6 +33,10 @@ app.post('/mail', multer().any(), (req,res) => {
     res.end()
 })
 
+app.get('/test', (req,res)=> {
+    res.send('hello')
+})
+
 app.post('/telegraf', bot.webhookCallback('/telegraf'))
 
 app.listen(port, () => console.log(`Running on ${port}`))
