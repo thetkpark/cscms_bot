@@ -106,8 +106,8 @@ bot.on('location', (ctx) => {
     console.log(ctx.update.message.location)
 })
 
-bot.hears(/(qr)(\d*)/,async (ctx) => {
-    const request = /(qr)(\d*)/.exec(ctx.update.message.text)
+bot.hears(/(qr)(.*)/,async (ctx) => {
+    const request = /(qr)(.*)/.exec(ctx.update.message.text)
     const qr = await getPromptPayQR(request[2])
     ctx.replyWithPhoto(qr)
 })
