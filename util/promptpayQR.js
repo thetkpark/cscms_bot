@@ -19,7 +19,7 @@ async function generatePromptPayQR (amount) {
 
 async function getPromptPayQR(amount){
     try{
-        const png = await generatePromptPayQR(parseInt(amount))
+        const png = await generatePromptPayQR(parseFloat(amount))
         let payload = png.split(',')
         const url = await imgur.uploadBase64(payload[1])
         return url.data.link
