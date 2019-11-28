@@ -6,7 +6,7 @@ const { convertTime, getTime } = require('../util/Time')
 const { getAnalysis } = require('../util/cloudflare')
 const { getCurrentWeather, getPollution } = require('../util/weather')
 const { getDevJoke, getJoke, getKnockJoke } = require('../util/joke')
-const { findUser, addUser, setPromptPayID, getPromptPayID } = require('../util/Airtable')
+const airtable = require('../util/Airtable')
 const getPromptPayQR = require('../util/promptpayQR')
 require('dotenv').config()
 require('../util/checkDown')
@@ -22,11 +22,11 @@ bot.start(async (ctx) => {
     if(ctx.update.message.from.last_name == undefined) name = ctx.update.message.from.first_name
     else name = ctx.update.message.from.first_name + ctx.update.message.from.last_name
     
-    const users = await findUser(chatID) //See if user is already in db
+    const users = await airtable.findUser(chatID) //See if user is already in db
     if(users.length == 0){
         try{
-            await addUser(name, chatID)
-            message = 'Welcome! start using now.'
+            await airtable.addUser(name, chatID)
+            message = `Welcome! start using now. User "/setqr #yourPromptPayID" to setup generating PromptPayQR feature.`
         }
         catch(err){
             console.log(err);
@@ -109,11 +109,11 @@ bot.on('location', (ctx) => {
     console.log(ctx.update.message.location)
 })
 
-bot.hears(/(setqr)(\d{10,})/, async (ctx) => {
-    const request = /(setqr)(\d{10,})/.exec(ctx.update.message.text)
+bot.hears(/(\/setqr)( {0,1})(\d{10,})/, async (ctx) => {
+    const request = /(setqr)( {0,1})(\d{10,})/.exec(ctx.update.message.text)
     try{
-        await setPromptPayID(ctx.update.message.from.id, request[2])
-        ctx.reply(`Your PromptPayQR is set to ${request[2]}`)
+        await airtable.setPromptPayID(ctx.update.message.from.id, request[3])
+        ctx.reply(`Your PromptPayQR is set to ${request[3]}`)
     }
     catch(err){
         ctx.reply(err)
@@ -122,7 +122,7 @@ bot.hears(/(setqr)(\d{10,})/, async (ctx) => {
 
 bot.hears(/([Qq][Rr])(.*)/, async (ctx) => {
     const request = /([Qq][Rr])(.*)/.exec(ctx.update.message.text)
-    const user = await getPromptPayID(ctx.update.message.from.id)
+    const user = await airtable.getPromptPayID(ctx.update.message.from.id)
     const qr = await getPromptPayQR(user[0].fields.PromptPay,request[2])
     ctx.replyWithPhoto(qr)
 })
