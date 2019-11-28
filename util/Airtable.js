@@ -27,7 +27,7 @@ async function addUser(username, chatID) {
     try{
         await airtable.create({
             Name: username,
-            ChatID: chatID
+            ChatID: chatID.toString()
         })
     }
     catch(err){

@@ -120,7 +120,7 @@ bot.hears(/(setqr)(\d{10,})/, async (ctx) => {
     }
 })
 
-bot.hears(/([Qq][Rr])(.*)/,async (ctx) => {
+bot.hears(/([Qq][Rr])(.*)/, async (ctx) => {
     const request = /([Qq][Rr])(.*)/.exec(ctx.update.message.text)
     const user = await getPromptPayID(ctx.update.message.from.id)
     const qr = await getPromptPayQR(user[0].fields.PromptPay,request[2])
