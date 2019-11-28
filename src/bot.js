@@ -26,7 +26,7 @@ bot.start(async (ctx) => {
     if(users.length == 0){
         try{
             await airtable.addUser(name, chatID)
-            message = 'Welcome! start using now.'
+            message = `Welcome! start using now. User "/setqr #yourPromptPayID" to setup generating PromptPayQR feature.`
         }
         catch(err){
             console.log(err);
