@@ -41,9 +41,35 @@ async function addUser(username, chatID) {
     
 // }
 
+async function setPromptPayID(chatID, promptPayID) {
+    try{
+        await airtable.updateWhere( 
+            `ChatID = "${chatID}"`,
+            { PromptPay: promptPayID }
+        )
+    }
+    catch(err){
+        return err
+    }
+}
+
+async function getPromptPayID(chatID) {
+    try{
+        const user = await airtable.read({
+            filterByFormula: `ChatID = "${chatID}"`,
+            maxRecords: 1
+        })
+        return user
+    }
+    catch(err){
+        return err
+    }
+}
 
 
 module.exports = {
     findUser,
-    addUser
+    addUser,
+    setPromptPayID,
+    getPromptPayID
 }

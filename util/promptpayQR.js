@@ -1,10 +1,9 @@
 const qrcode = require('qrcode')
 const generatePayload = require('promptpay-qr')
 const imgur = require('imgur')
-const promptpayId = '0856608000'
 
-async function generatePromptPayQR (amount) {
-    const payload = generatePayload(promptpayId, { amount })
+async function generatePromptPayQR (promptPayID, amount) {
+    const payload = generatePayload(promptPayID, { amount })
     const options = { type: 'png', color: { dark: '#003b6a', light: '#f7f8f7' } }
 
     try{
@@ -17,9 +16,9 @@ async function generatePromptPayQR (amount) {
 
 }
 
-async function getPromptPayQR(amount){
+async function getPromptPayQR(promptPayID, amount){
     try{
-        const png = await generatePromptPayQR(parseFloat(amount))
+        const png = await generatePromptPayQR(promptPayID, parseFloat(amount))
         let payload = png.split(',')
         const url = await imgur.uploadBase64(payload[1])
         return url.data.link
@@ -27,7 +26,6 @@ async function getPromptPayQR(amount){
     catch(err){
         return err.message
     }
-
 }
 
 

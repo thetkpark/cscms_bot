@@ -6,9 +6,8 @@ const { convertTime, getTime } = require('../util/Time')
 const { getAnalysis } = require('../util/cloudflare')
 const { getCurrentWeather, getPollution } = require('../util/weather')
 const { getDevJoke, getJoke, getKnockJoke } = require('../util/joke')
-const { findUser, addUser } = require('../util/Airtable')
+const { findUser, addUser, setPromptPayID, getPromptPayID } = require('../util/Airtable')
 const getPromptPayQR = require('../util/promptpayQR')
-
 require('dotenv').config()
 require('../util/checkDown')
 
@@ -18,7 +17,11 @@ const telegram = new Telegram(process.env.BOT_TOKEN)
 bot.start(async (ctx) => {
     let message = `Welcome! use /status to get status of the server`
     const chatID = ctx.update.message.from.id
-    const name = ctx.update.message.from.first_name + ctx.update.message.from.last_name
+    
+    let name
+    if(ctx.update.message.from.last_name == undefined) name = ctx.update.message.from.first_name
+    else name = ctx.update.message.from.first_name + ctx.update.message.from.last_name
+    
     const users = await findUser(chatID) //See if user is already in db
     if(users.length == 0){
         try{
@@ -106,9 +109,21 @@ bot.on('location', (ctx) => {
     console.log(ctx.update.message.location)
 })
 
+bot.hears(/(setqr)(\d{10,})/, async (ctx) => {
+    const request = /(setqr)(\d{10,})/.exec(ctx.update.message.text)
+    try{
+        await setPromptPayID(ctx.update.message.from.id, request[2])
+        ctx.reply(`Your PromptPayQR is set to ${request[2]}`)
+    }
+    catch(err){
+        ctx.reply(err)
+    }
+})
+
 bot.hears(/([Qq][Rr])(.*)/,async (ctx) => {
     const request = /([Qq][Rr])(.*)/.exec(ctx.update.message.text)
-    const qr = await getPromptPayQR(request[2])
+    const user = await getPromptPayID(ctx.update.message.from.id)
+    const qr = await getPromptPayQR(user[0].fields.PromptPay,request[2])
     ctx.replyWithPhoto(qr)
 })
 
