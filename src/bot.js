@@ -109,11 +109,11 @@ bot.on('location', (ctx) => {
     console.log(ctx.update.message.location)
 })
 
-bot.hears(/(setqr)(\d{10,})/, async (ctx) => {
-    const request = /(setqr)(\d{10,})/.exec(ctx.update.message.text)
+bot.hears(/(\/setqr)( {0,1})(\d{10,})/, async (ctx) => {
+    const request = /(setqr)( {0,1})(\d{10,})/.exec(ctx.update.message.text)
     try{
-        await setPromptPayID(ctx.update.message.from.id, request[2])
-        ctx.reply(`Your PromptPayQR is set to ${request[2]}`)
+        await setPromptPayID(ctx.update.message.from.id, request[3])
+        ctx.reply(`Your PromptPayQR is set to ${request[3]}`)
     }
     catch(err){
         ctx.reply(err)
