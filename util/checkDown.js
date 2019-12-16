@@ -1,7 +1,6 @@
 const axios = require("axios");
 const Telegram = require("telegraf/telegram");
 const { convertTime, getTime } = require("./Time");
-const ping = require("ping");
 
 require("dotenv").config();
 const telegram = new Telegram(process.env.BOT_TOKEN);
