@@ -101,7 +101,7 @@ bot.command('knockjoke', async ctx => {
 	}, 5000)
 })
 
-bot.command('eat', async () => {
+bot.command('eat', async ctx => {
 	const rester = await randomRes()
 	ctx.reply(rester)
 })
