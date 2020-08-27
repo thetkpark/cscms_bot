@@ -6,7 +6,7 @@ const { convertTime, getTime } = require('../util/Time')
 const { getAnalysis } = require('../util/cloudflare')
 const { getCurrentWeather, getPollution } = require('../util/weather')
 const { getDevJoke, getJoke, getKnockJoke } = require('../util/joke')
-const { randomRes } = require('../util/eat')
+const { randomRes, randomDrink } = require('../util/eat')
 const spacer = require('../util/space')
 const airtable = require('../util/Airtable')
 const getPromptPayQR = require('../util/promptpayQR')
@@ -103,6 +103,11 @@ bot.command('knockjoke', async ctx => {
 
 bot.command('eat', async ctx => {
 	const rester = await randomRes()
+	ctx.reply(rester)
+})
+
+bot.command('drink', async ctx => {
+	const rester = await randomDrink()
 	ctx.reply(rester)
 })
 
