@@ -1,13 +1,13 @@
 import express from 'express'
-const axios = require('axios')
-const Ddos = require('ddos')
-const multer = require('multer')
-const bodyParser = require('body-parser')
-const Telegram = require('telegraf/telegram')
+import axios from 'axios'
+import Ddos from 'ddos'
+import multer from 'multer'
+import bodyParser from 'body-parser'
+import Telegram from 'telegraf'
 
-const MailGunWebHookHandler = require('../util/MailGun')
+import { MailGunWebHookHandler } from '../util/MailGun'
 
-const { bot, telegram } = require('./bot')
+import { bot, telegram } from './bot'
 const port = process.env.PORT || 3000
 require('dotenv').config()
 
