@@ -1,4 +1,4 @@
-const AirtablePlus = require('airtable-plus')
+import AirtablePlus from 'airtable-plus'
 require('dotenv').config()
 
 const airtable = new AirtablePlus({
@@ -6,7 +6,7 @@ const airtable = new AirtablePlus({
 	apiKey: process.env.AIRTABLE_API_KEY
 })
 
-async function randomRes() {
+export async function randomRes() {
 	try {
 		const res = await airtable.read(
 			{},
@@ -22,7 +22,7 @@ async function randomRes() {
 	}
 }
 
-async function randomDrink() {
+export async function randomDrink() {
 	try {
 		const res = await airtable.read(
 			{},
@@ -36,9 +36,4 @@ async function randomDrink() {
 		console.log(err)
 		return err
 	}
-}
-
-module.exports = {
-	randomRes,
-	randomDrink
 }
