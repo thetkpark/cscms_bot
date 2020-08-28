@@ -1,4 +1,4 @@
-function isThaiVowels(char) {
+function isThaiVowels(char: string): boolean {
 	const vowels = ['่', '้', '๊', '๋', 'ิ', 'ี', 'ึ', 'ื', '็', 'ั', 'ุ', 'ู', '์', 'ํ']
 
 	if (vowels.includes(char)) {
@@ -7,7 +7,7 @@ function isThaiVowels(char) {
 	return false
 }
 
-function removeTrailingSpace(text) {
+function removeTrailingSpace(text: String): String {
 	if (text[text.length - 1] === ' ') {
 		return text.slice(0, -1)
 	}
@@ -15,8 +15,8 @@ function removeTrailingSpace(text) {
 	return text
 }
 
-function spacer(sentence) {
-	let result = ''
+export function spacer(sentence: String): String {
+	let result: String = ''
 
 	sentence.split('').forEach(char => {
 		if (char === ' ') {
@@ -44,5 +44,3 @@ function spacer(sentence) {
 
 	return result
 }
-
-module.exports = spacer
