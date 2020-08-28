@@ -5,7 +5,9 @@
 	"main": "index.js",
 	"scripts": {
 		"dev": "backpack",
-		"build": "backpack build"
+		"build": "backpack build",
+		"postinstall": "yarn build",
+		"start": "node build/main.js"
 	},
 	"repository": {
 		"type": "git",
