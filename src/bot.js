@@ -1,6 +1,7 @@
 const axios = require('axios')
 const telegraf = require('telegraf')
 const Telegram = require('telegraf/telegram')
+const cache = require('memory-cache')
 
 const { convertTime, getTime } = require('../util/Time')
 const { getAnalysis } = require('../util/cloudflare')
@@ -103,11 +104,13 @@ bot.command('knockjoke', async ctx => {
 
 bot.command('eat', async ctx => {
 	const rester = await randomRes()
+	cache.put('count', 1)
 	ctx.reply(rester)
 })
 
 bot.command('drink', async ctx => {
 	const rester = await randomDrink()
+	console.log(cache.get('count'))
 	ctx.reply(rester)
 })
 
