@@ -1,4 +1,4 @@
-import AirtablePlus from 'airtable-plus'
+const AirtablePlus = require('airtable-plus')
 require('dotenv').config()
 
 const airtable = new AirtablePlus({

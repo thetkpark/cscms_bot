@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { Telegram } from 'telegraf'
-import { convertTime, getTime } from './Time'
+import { getTime } from './Time'
 
 require('dotenv').config()
 const telegram = new Telegram(process.env.BOT_TOKEN as string)
