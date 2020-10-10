@@ -1,17 +1,17 @@
-const axios = require('axios')
-const Telegram = require('telegraf/telegram')
-const { convertTime, getTime } = require('./Time')
+import axios from 'axios'
+import { Telegram } from 'telegraf'
+import { getTime } from './Time'
 
 require('dotenv').config()
-const telegram = new Telegram(process.env.BOT_TOKEN)
+const telegram = new Telegram(process.env.BOT_TOKEN as string)
 
-let isUp
+let isUp: boolean
 
 async function getInitState() {
 	try {
 		const data = await axios(`${process.env.ENDPOINT}:61208/api/3/uptime`)
-		if (data.status === 200) isUp = `✅`
-		else if (data.status != 200) isUp = `⛔️`
+		if (data.status === 200) isUp = true
+		else if (data.status != 200) isUp = false
 	} catch {
 		isUp = false
 	}

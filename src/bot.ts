@@ -1,21 +1,20 @@
-const axios = require('axios')
-const telegraf = require('telegraf')
-const Telegram = require('telegraf/telegram')
-const cache = require('memory-cache')
-
-const { convertTime, getTime } = require('../util/Time')
-const { getAnalysis } = require('../util/cloudflare')
-const { getCurrentWeather, getPollution } = require('../util/weather')
-const { getDevJoke, getJoke, getKnockJoke } = require('../util/joke')
-const { randomRes, randomDrink } = require('../util/eat')
-const spacer = require('../util/space')
-const airtable = require('../util/Airtable')
-const getPromptPayQR = require('../util/promptpayQR')
+import axios from 'axios'
+import telegraf from 'telegraf'
+import Telegraf, { Telegram } from 'telegraf'
+import cache from 'memory-cache'
+import { convertTime, getTime } from '../util/Time'
+import { getAnalysis } from '../util/cloudflare'
+import { getCurrentWeather, getPollution } from '../util/weather'
+import { getDevJoke, getJoke, getKnockJoke } from '../util/joke'
+import { randomRes, randomDrink } from '../util/eat'
+import { spacer } from '../util/space'
+import { findUser, addUser, setPromptPayID, getPromptPayID } from '../util/Airtable'
+import { getPromptPayQR } from '../util/promptpayQR'
 require('dotenv').config()
 require('../util/checkDown')
 
-const bot = new telegraf(process.env.BOT_TOKEN)
-const telegram = new Telegram(process.env.BOT_TOKEN)
+export const bot = new telegraf(process.env.BOT_TOKEN as string)
+export const telegram = new Telegram(process.env.BOT_TOKEN as string)
 
 bot.start(async ctx => {
 	let message = `Welcome! use /status to get status of the server`
@@ -25,10 +24,10 @@ bot.start(async ctx => {
 	if (ctx.update.message.from.last_name == undefined) name = ctx.update.message.from.first_name
 	else name = ctx.update.message.from.first_name + ctx.update.message.from.last_name
 
-	const users = await airtable.findUser(chatID) //See if user is already in db
+	const users = await findUser(chatID) //See if user is already in db
 	if (users.length == 0) {
 		try {
-			await airtable.addUser(name, chatID)
+			await addUser(name, chatID)
 			message = `Welcome! start using now. User "/setqr #yourPromptPayID" to setup generating PromptPayQR feature.`
 		} catch (err) {
 			console.log(err)
@@ -126,7 +125,7 @@ bot.hears(/(\/space)\s(.*)/, ctx => {
 bot.hears(/(\/setqr)( {0,1})(\d{10,})/, async ctx => {
 	const request = /(setqr)( {0,1})(\d{10,})/.exec(ctx.update.message.text)
 	try {
-		await airtable.setPromptPayID(ctx.update.message.from.id, request[3])
+		await setPromptPayID(ctx.update.message.from.id, request[3])
 		ctx.reply(`Your PromptPayQR is set to ${request[3]}`)
 	} catch (err) {
 		ctx.reply(err)
@@ -134,8 +133,9 @@ bot.hears(/(\/setqr)( {0,1})(\d{10,})/, async ctx => {
 })
 
 bot.hears(/([Qq][Rr])(.*)/, async ctx => {
+	console.log(ctx.update.message.text)
 	const request = /([Qq][Rr])(.*)/.exec(ctx.update.message.text)
-	const user = await airtable.getPromptPayID(ctx.update.message.from.id)
+	const user = await getPromptPayID(ctx.update.message.from.id)
 	const qr = await getPromptPayQR(user[0].fields.PromptPay, request[2])
 	ctx.replyWithPhoto(qr)
 })
