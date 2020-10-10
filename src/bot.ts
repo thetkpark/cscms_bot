@@ -103,13 +103,13 @@ bot.command('knockjoke', async ctx => {
 
 bot.command('eat', async ctx => {
 	const rester = await randomRes()
-	cache.put('count', 1)
+	// cache.put('count', 1)
 	ctx.reply(rester)
 })
 
 bot.command('drink', async ctx => {
 	const rester = await randomDrink()
-	console.log(cache.get('count'))
+	// console.log(cache.get('count'))
 	ctx.reply(rester)
 })
 
