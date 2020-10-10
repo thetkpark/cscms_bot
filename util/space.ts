@@ -7,7 +7,7 @@ function isThaiVowels(char: string): boolean {
 	return false
 }
 
-function removeTrailingSpace(text: String): String {
+function removeTrailingSpace(text: string): string {
 	if (text[text.length - 1] === ' ') {
 		return text.slice(0, -1)
 	}
@@ -15,8 +15,8 @@ function removeTrailingSpace(text: String): String {
 	return text
 }
 
-export function spacer(sentence: String): String {
-	let result: String = ''
+export function spacer(sentence: string): string {
+	let result: string = ''
 
 	sentence.split('').forEach(char => {
 		if (char === ' ') {

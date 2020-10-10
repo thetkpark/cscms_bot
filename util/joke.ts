@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 interface JokeResponse {
-	setup: String
-	punchline: String
+	setup: string
+	punchline: string
 }
 
 export async function getDevJoke(): Promise<JokeResponse> {

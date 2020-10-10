@@ -7,7 +7,7 @@ const airtable = new AirtablePlus({
 	tableName: 'User_List'
 })
 
-export async function findUser(chatID: String) {
+export async function findUser(chatID: Number) {
 	let users
 	try {
 		users = await airtable.read({
@@ -21,7 +21,7 @@ export async function findUser(chatID: String) {
 	return users
 }
 
-export async function addUser(username: String, chatID: String) {
+export async function addUser(username: String, chatID: number) {
 	try {
 		await airtable.create({
 			Name: username,
@@ -37,7 +37,7 @@ export async function addUser(username: String, chatID: String) {
 
 // }
 
-export async function setPromptPayID(chatID: String, promptPayID: String) {
+export async function setPromptPayID(chatID: number, promptPayID: String) {
 	try {
 		await airtable.updateWhere(`ChatID = "${chatID}"`, { PromptPay: promptPayID })
 	} catch (err) {
@@ -45,7 +45,7 @@ export async function setPromptPayID(chatID: String, promptPayID: String) {
 	}
 }
 
-export async function getPromptPayID(chatID: String) {
+export async function getPromptPayID(chatID: number) {
 	try {
 		const user = await airtable.read({
 			filterByFormula: `ChatID = "${chatID}"`,
