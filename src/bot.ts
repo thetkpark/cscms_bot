@@ -9,7 +9,7 @@ import { getDevJoke, getJoke, getKnockJoke } from '../util/joke'
 import { randomRes, randomDrink } from '../util/eat'
 import { spacer } from '../util/space'
 import { findUser, addUser, setPromptPayID, getPromptPayID } from '../util/Airtable'
-import { getPromptPayQR } from '../util/promptpayQR'
+import { getPromptPayQR, generatePromptPayQR } from '../util/promptpayQR'
 require('dotenv').config()
 require('../util/checkDown')
 

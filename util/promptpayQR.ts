@@ -1,9 +1,10 @@
 const qrcode = require('qrcode')
-const { generatePayload } = require('promptpay-qr')
+const generatePayload = require('promptpay-qr')
 const imgur = require('imgur')
 
-async function generatePromptPayQR(promptPayID: string, amount: number) {
+export async function generatePromptPayQR(promptPayID: string, amount: number) {
 	const payload = generatePayload(promptPayID, { amount })
+	
 	const options = { type: 'png', color: { dark: '#003b6a', light: '#f7f8f7' } }
 
 	try {
