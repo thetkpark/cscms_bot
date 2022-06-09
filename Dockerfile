@@ -1,9 +1,12 @@
-FROM node:alpine
+FROM node:14-alpine
 
 WORKDIR /app
 
 COPY ./package.json ./
-RUN npm install
+COPY ./yarn.lock ./
+RUN yarn
 COPY ./ ./
 
-CMD ["npm", "start"]
+RUN yarn build
+
+CMD ["yarn", "start"]
